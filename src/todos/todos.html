@@ -1,9 +1,9 @@
 <div class="container">
 	<a ui-sref="about" class='nav-link'>About</a>
 	<h2>Todo App</h2>
-<!--ng-submit will allow you to use enter key to submit notes-->
-	<form ng-submit="createTask()"> 
-		<input  class="form-control todos__create-input" placeholder="What do you need to do?" ng-model="createTaskInput"/>
+	<!--ng-submit will allow you to use enter key to submit notes-->
+	<form ng-submit="createTask()">
+		<input class="form-control todos__create-input" placeholder="What do you need to do?" ng-model="createTaskInput" />
 		<button class="btn btn-success todos__create-button">Add To Do</button>
 	</form>
 	<table class="table table-striped">
@@ -14,12 +14,27 @@
 		</tr>
 		<tr ng-repeat="todo in todos">
 			<td>
-				<input type="checkbox" ng-checked="todo.isCompleted" ng-click="onCompletedClick(todo)"/></td>
-				<td><span class="todos__task" ng-class="{'todos__task--completed': todo.isCompleted}">{{todo.task}}</span></td>
-				<td>
-					<button class="btn btn-info" ng-click="onEdit">Edit</button>
-					<button class="btn btn-danger">Danger</button>
-				</td>
+				<input type="checkbox" ng-checked="todo.isCompleted" ng-click="onCompletedClick(todo)" />
+			</td>
+			<td>
+				<span ng-if="!todo.isEditing" class="todos__task" ng-class="{'todos__task--completed': todo.isCompleted}">{{todo.task}}
+					</span>
+<!--				the form that will appear when editing, with current value inside-->
+				<form ng-submit="updateTask(todo)">
+					<input ng-if="todo.isEditing" class="form-control todos_update-input"ng-value="todo.task" ng-model="todo.updatedTask"/>
+				</form>
+			</td>
+			<td>
+<!--				button set for when your NOT editing-->
+				<button ng-if="!todo.isEditing" class="btn btn-info" ng-click="onEditClick(todo)">Edit</button>
+				<button ng-if="!todo.isEditing" class="btn btn-danger">Danger</button>
+<!--				button set for editing-->
+				<button ng-if="todo.isEditing" class="btn btn-primary" ng-click="updateTask(todo)">Save
+				</button>
+				<button ng-if="todo.isEditing" class="btn btn-default" ng-click="onCancelClick(todo)">Cancel
+				</button>
+			</td>
+			</td>
 		</tr>
 	</table>
 </div>
