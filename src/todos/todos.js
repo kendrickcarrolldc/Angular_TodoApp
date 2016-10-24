@@ -1,4 +1,5 @@
-export default function ($scope) {
+import _ from 'lodash';
+export default function ($scope, todoFactory) {
 	let params = {
 		createHasInput: false
 	};
@@ -28,30 +29,16 @@ export default function ($scope) {
 	$scope.onCancelClick = todo => {
 		todo.isEditing = false;
 	}
-		// Resets input form with the ng-submit functionality	
-	$scope.createTask = () => {
-		params.createHasInput = false;
-		$scope.createTaskInput = '';
-	};
+		// Resets input form with the ng-submit functionality
 	
-	$scope.updateTask = todo => {
-		todo.task = todo.updatedTask;
-		todo.isEditing = false;
+	//using a the lodash method partial to bind
+	$scope.createTask = _.partial(todoFactory.createTask, $scope, params);
+	
+	$scope.updateTask = 
+	_.partial(todoFactory.updateTask);
+	
+	$scope.deleteTask = _.partial(todoFactory.deleteTask, $scope);
+
+	$scope.$watch('createTaskInput', _.partial(todoFactory.watchCreateTaskInput, params, $scope));
+
 	}
-
-	$scope.$watch('createTaskInput', val => {
-		if (!val && params.createHasInput) {
-			$scope.todos.pop();
-			params.createHasInput = false;
-		} else if (val && !params.createHasInput) {
-			$scope.todos.push({
-				task: val,
-				isCompleted: false
-			});
-			params.createHasInput = true;
-		} else if (val && params.createHasInput) {
-			$scope.todos[$scope.todos.length - 1].task = val
-		}
-
-	});
-}
