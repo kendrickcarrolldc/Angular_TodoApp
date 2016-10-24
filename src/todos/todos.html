@@ -26,7 +26,7 @@
 <!--				the form that will appear when editing, with current value inside-->
 				<form ng-submit="updateTask(todo)">
 					<input ng-if="todo.isEditing" 
-							class="form-control todos_update-input"
+							class="form-control todos__update-input"
 							ng-value="todo.task" 
 							ng-model="todo.updatedTask"/>
 				</form>
@@ -55,7 +55,7 @@
 						Cancel
 				</button>
 			</td>
-			</td>
+			
 		</tr>
 	</table>
 </div>
